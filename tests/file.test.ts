@@ -1,24 +1,41 @@
 import { Carts } from "../src/carts";
 import * as fs from "fs";
 
-jest.mock("fs");
+jest.mock("fs", () => ({
+  writeFileSync: jest.fn(),
+  readFileSync: jest.fn(),
+  mkdirSync: jest.fn(),
+  existsSync: jest.fn().mockReturnValue(false),
+}));
 
 describe("Panier - Sauvegarde et chargement", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("test_WriteAndReadFileSync_SavingAndLoadingFromFile_ShouldHaveTheLoadedFile", () => {
     const cart = new Carts();
     cart.addProduct("Bonbon", 3);
-
-    const writeFileSync = jest.spyOn(fs, "writeFileSync");
-    const readFileSync = jest
-      .spyOn(fs, "readFileSync")
-      .mockReturnValue(JSON.stringify([{ name: "Bonbon", price: 3 }]));
+    (fs.readFileSync as jest.Mock).mockReturnValue(
+      JSON.stringify([{ name: "Bonbon", price: 3 }]),
+    );
 
     cart.saveToFile("panier.json");
 
     const newCart = new Carts();
     newCart.loadFromFile("panier.json");
 
-    expect(writeFileSync).toHaveBeenCalled();
+    expect(fs.writeFileSync).toHaveBeenCalled();
     expect(newCart.getTotal()).toBe(3);
+  });
+
+  it("test_saveToFile_CreatingANewSave_ShouldAddATimeStamp", () => {
+    const cart = new Carts();
+    cart.addProduct("Bonbon", 3);
+
+    cart.saveToFile("panier.json");
+
+    expect(fs.mkdirSync).toHaveBeenCalled();
+    expect(fs.writeFileSync).toHaveBeenCalled();
   });
 });

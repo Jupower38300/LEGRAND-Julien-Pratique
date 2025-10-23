@@ -27,6 +27,10 @@ export class Carts {
   }
 
   saveToFile(filepath: string): void {
+    const timestamp = new Date().toISOString();
+    const archiveDir = "archives";
+    if (!fs.existsSync(archiveDir)) fs.mkdirSync(archiveDir);
+    const archivePath = `${archiveDir}/panier_${timestamp}.json`;
     fs.writeFileSync(filepath, JSON.stringify(this.products, null, 2), "utf-8");
   }
 
