@@ -22,6 +22,6 @@ describe("Ajout de produits dans le panier", () => {
 
   it("test_removeProduct_RemovingSomethingThatDoesntExist_ShouldNotThrowError", () => {
     cart.addProduct("Bonbon", 3);
-    expect(() => cart.removeProduct()).not.toThrow();
+    expect(() => cart.removeProduct("Sucette")).not.toThrow();
   });
 });

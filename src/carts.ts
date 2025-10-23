@@ -11,4 +11,8 @@ export class Carts {
       0,
     );
   }
+
+  removeProduct(name: string): void {
+    this.products = this.products.filter((product) => product.name !== name);
+  }
 }
