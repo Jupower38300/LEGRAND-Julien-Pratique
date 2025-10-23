@@ -38,4 +38,16 @@ describe("Panier - Sauvegarde et chargement", () => {
     expect(fs.mkdirSync).toHaveBeenCalled();
     expect(fs.writeFileSync).toHaveBeenCalled();
   });
+
+  it("test_saveToFile_DirectoryExists_ShouldNotCallMkdir", () => {
+    const cart = new Carts();
+    cart.addProduct("Bonbon", 3);
+
+    (fs.existsSync as jest.Mock).mockReturnValue(true);
+
+    cart.saveToFile("panier.json");
+
+    expect(fs.mkdirSync).not.toHaveBeenCalled();
+    expect(fs.writeFileSync).toHaveBeenCalled();
+  });
 });
