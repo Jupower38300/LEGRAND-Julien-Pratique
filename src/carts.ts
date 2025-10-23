@@ -1,9 +1,14 @@
+import { InvalidPriceError } from "./exceptions";
+
 export class Carts {
   products: { name: string; price: number }[] = [];
 
   discount: number = 0;
 
   addProduct(name: string, price: number): void {
+    if (price <= 0) {
+      throw new InvalidPriceError("Le prix est invalide");
+    }
     this.products.push({ name, price });
   }
 

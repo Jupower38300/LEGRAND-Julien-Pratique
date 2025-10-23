@@ -1,4 +1,5 @@
 import { Carts } from "../src/carts";
+import { InvalidPriceError } from "../src/exceptions";
 
 describe("Ajout de produits dans le panier", () => {
   let cart: Carts;
@@ -29,5 +30,11 @@ describe("Ajout de produits dans le panier", () => {
     cart.addProduct("Livre", 20);
     cart.applyDiscount(10);
     expect(cart.getTotal()).toBe(18);
+  });
+
+  it("test_addProduct_AddingNegativePricedProduct_ShouldThrowError", () => {
+    expect(() => cart.addProduct("Ordinateur", -100)).toThrow(
+      InvalidPriceError,
+    );
   });
 });
