@@ -1,4 +1,5 @@
 import { InvalidPriceError } from "./exceptions";
+import * as fs from "fs";
 
 export class Carts {
   products: { name: string; price: number }[] = [];
@@ -23,5 +24,14 @@ export class Carts {
 
   applyDiscount(pourcent: number): void {
     this.discount = pourcent;
+  }
+
+  saveToFile(filepath: string): void {
+    fs.writeFileSync(filepath, JSON.stringify(this.products, null, 2), "utf-8");
+  }
+
+  loadFromFile(filepath: string): void {
+    const data = fs.readFileSync(filepath, "utf-8");
+    this.products = JSON.parse(data);
   }
 }
