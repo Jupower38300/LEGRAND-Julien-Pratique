@@ -24,4 +24,10 @@ describe("Ajout de produits dans le panier", () => {
     cart.addProduct("Bonbon", 3);
     expect(() => cart.removeProduct("Sucette")).not.toThrow();
   });
+
+  it("test_applyDiscount_ApplyingDiscountOnTotal_ShouldReturnDiscountedAmount", () => {
+    cart.addProduct("Livre", 20);
+    cart.applyDiscount(10);
+    expect(cart.getTotal()).toBe(18);
+  });
 });
